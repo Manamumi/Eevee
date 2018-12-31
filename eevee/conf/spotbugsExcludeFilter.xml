@@ -1,0 +1,6 @@
+<FindBugsFilter>
+    <Match>
+        <Package name="~xyz\.eevee\.eevee\.bot\.command\..*" />
+        <Bug code="BC" />
+    </Match>
+</FindBugsFilter>

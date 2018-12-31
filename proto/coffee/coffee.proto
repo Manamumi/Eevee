@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "xyz.eevee.coffee.rpc";
+option java_outer_classname = "CoffeeProto";
+
+package coffee;
+
+service Coffee {
+    rpc GetString(Key) returns (StringEntry) {}
+    rpc GetNumber(Key) returns (NumberEntry) {}
+    rpc GetBoolean(Key) returns (BooleanEntry) {}
+    rpc GetStringList(Key) returns (StringListEntry) {}
+    rpc Get(Key) returns (Entry) {}
+
+    rpc SetString(StringEntry) returns (WriteResult) {}
+    rpc SetNumber(NumberEntry) returns (WriteResult) {}
+    rpc SetBoolean(BooleanEntry) returns (WriteResult) {}
+    rpc SetStringList(StringListEntry) returns (WriteResult) {}
+
+    rpc Delete(Key) returns (Entry) {}
+}
+
+enum EntryType {
+    String = 0;
+    Number = 1;
+    Boolean = 2;
+    StringList = 3;
+}
+
+message WriteResult {
+    string error = 1;
+}
+
+message Key {
+    repeated string value = 1;
+}
+
+message Entry {
+    string error = 1;
+    repeated string key = 2;
+    string value = 3;
+    map<string, Entry> children = 4;
+    EntryType entryType = 5;
+}
+
+message StringEntry {
+    string error = 1;
+    repeated string key = 2;
+    string value = 3;
+}
+
+message NumberEntry {
+    string error = 1;
+    repeated string key = 2;
+    double value = 3;
+}
+
+message BooleanEntry {
+    string error = 1;
+    repeated string key = 2;
+    bool value = 3;
+}
+
+message StringListEntry {
+    string error = 1;
+    repeated string key = 2;
+    repeated string value = 3;
+}

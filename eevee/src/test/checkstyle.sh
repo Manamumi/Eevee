@@ -1,0 +1,1 @@
+java -jar tooling/checkstyle-8.12-all.jar -c eevee/conf/checkstyle.xml eevee/src/*

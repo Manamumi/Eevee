@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "xyz.eevee.munchlax";
+option java_outer_classname = "MunchlaxProto";
+
+package munchlax;
+
+message NewMessageEvent {
+    string id = 1;
+    string channelId = 2;
+    string content = 3;
+    string timestamp = 4;
+    string editedTimestamp = 5;
+    Member member = 6;
+    User author = 7;
+    repeated Member mentions = 8;
+    Guild guild = 9;
+    string renderedContent = 10;
+}
+
+message User {
+    string id = 1;
+    string email = 2;
+    string username = 3;
+    string avatar = 4;
+    string discriminator = 5;
+    string token = 6;
+    bool verified = 7;
+    bool mfaEnabled = 8;
+    bool bot = 9;
+}
+
+message GuildMemberJoinEvent {
+    Member member = 1;
+    Guild guild = 2;
+    string timestamp = 3;
+}
+
+message Guild {
+    string id = 1;
+    string name = 2;
+    // List of member ID that can be resolved through Porygon.
+    repeated string members = 3;
+    string createdAt = 4;
+    string iconUrl = 5;
+}
+
+message Member {
+    Guild guild = 1;
+    string joinedAt = 2;
+    string nick = 3;
+    User user = 4;
+    repeated Permission permissions = 5;
+    string effectiveName = 6;
+}
+
+enum Permission {
+    CREATE_INSTANT_INVITE = 0;
+    KICK_MEMBERS = 1;
+    BAN_MEMBERS = 2;
+    ADMINISTRATOR = 3;
+    MANAGE_CHANNEL = 4;
+    MANAGE_SERVER = 5;
+    MESSAGE_ADD_REACTION = 6;
+    VIEW_AUDIT_LOGS = 7;
+    PRIORITY_SPEAKER = 8;
+
+    MESSAGE_READ = 10;
+
+    MESSAGE_WRITE = 11;
+    MESSAGE_TTS = 12;
+    MESSAGE_MANAGE = 13;
+    MESSAGE_EMBED_LINKS = 14;
+    MESSAGE_ATTACH_FILES = 15;
+    MESSAGE_HISTORY = 16;
+    MESSAGE_MENTION_EVERYONE = 17;
+    MESSAGE_EXT_EMOJI = 18;
+
+    VOICE_CONNECT = 20;
+    VOICE_SPEAK = 21;
+    VOICE_MUTE_OTHERS = 22;
+    VOICE_DEAF_OTHERS = 23;
+    VOICE_MOVE_OTHERS = 24;
+    VOICE_USE_VAD = 25;
+
+    NICKNAME_CHANGE = 26;
+    NICKNAME_MANAGE = 27;
+
+    MANAGE_ROLES = 28;
+
+    MANAGE_WEBHOOKS = 29;
+    MANAGE_EMOTES = 30;
+
+    UNKNOWN = 1000;
+}

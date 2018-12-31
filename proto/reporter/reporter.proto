@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "xyz.eevee.reporter.rpc";
+option java_outer_classname = "ReporterProto";
+
+package reporter;
+
+service Reporter {
+    rpc GetMetrics(MetricsRequest) returns (MetricsResponse) {}
+    rpc EmitMetrics(HostMetricsReport) returns (HostMetricsReportResponse) {}
+}
+
+message MetricsRequest {
+    repeated string hostnames = 1;
+    google.protobuf.Timestamp start = 2;
+    google.protobuf.Timestamp end = 3;
+}
+
+message MetricsResponse {
+    map<string, HostMetrics> metricsForHost = 1;
+}
+
+message HostMetrics {
+    repeated HostMetricsReport metrics = 1;
+}
+
+message HostMetricsReport {
+    google.protobuf.Timestamp timestamp = 1;
+    double cpuUsagePercent = 2;
+    double totalMemory = 3;
+    double usedMemory = 3;
+    string hostname = 4;
+}
+
+message HostMetricsReportResponse {
+}

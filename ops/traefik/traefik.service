@@ -1,0 +1,12 @@
+[Unit]
+Description=Traefik Proxy
+Wants=network-online.target
+After=network-online.target
+[Service]
+Type=simple
+PIDFile=/run/traefik/traefik.pid
+Restart=on-failure
+ExecStartPre=-/bin/rm -f /run/traefik/traefik.pid
+ExecStart=/usr/bin/traefik --configFile=/opt/traefik/traefik.toml --docker
+[Install]
+WantedBy=multi-user.target

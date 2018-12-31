@@ -1,0 +1,12 @@
+[Unit]
+Description=Nomad Agent
+Wants=network-online.target
+After=network-online.target
+[Service]
+Type=simple
+PIDFile=/run/nomad/nomad.pid
+Restart=on-failure
+ExecStartPre=-/bin/rm -f /run/nomad/nomad.pid
+ExecStart=/usr/bin/nomad agent --client --config=/opt/nomad/nomad_conf.hcl
+[Install]
+WantedBy=multi-user.target

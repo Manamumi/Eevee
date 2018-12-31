@@ -1,0 +1,21 @@
+.list-group-item .close {
+  display: none;
+}
+
+.list-group-item:hover .close {
+  display: inline-block;
+}
+
+.apps-app-item {
+  position: relative;
+}
+
+.apps-blocking-screen {
+  position: absolute;
+  z-index: 999;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.6);
+}

@@ -1,0 +1,123 @@
+stages:
+  - lint
+  - compile
+  - build
+  - deploy
+
+variables:
+  GIT_STRATEGY: clone
+
+cache:
+  key: ${CI_BUILD_REF_NAME}
+  paths:
+    - inside/node_modules/
+
+#spotbugs:
+#  image: gradle:jdk8
+#  script:
+#  - gradle spotbugsMain || exit 1
+#  stage: lint
+#  cache:
+#    key: "$CI_COMMIT_REF_NAME"
+#    paths:
+#    - build
+#    - .gradle
+#  artifacts:
+#    # Need to see artifacts at all times for bug fixing.
+#    when: always
+#    paths:
+#    - build/reports/spotbugs/main.html
+
+eevee sanity check:
+  stage: lint
+  script:
+  - bazel test eevee:sanity --test_output=errors --force_python=PY3 --python_top=//:python36
+  tags:
+    - bazel
+
+eevee checkstyle:
+  script:
+  - bazel test eevee:checkstyle --test_output=errors
+  stage: lint
+  tags:
+    - bazel
+
+eevee pmd:
+  script:
+  - bazel test eevee:pmd --test_output=errors --force_python=PY3 --python_top=//:python36
+  stage: lint
+  allow_failure: true
+  tags:
+    - bazel
+
+inside frontend:
+  image: node:10.9
+  script:
+    - cd inside
+    - npm install
+    - npm install -g grunt-cli
+    - npm rebuild node-sass
+    - grunt
+  stage: compile
+  tags:
+    - dind
+  artifacts:
+    paths:
+      - inside/static/
+
+eevee compile:
+  script:
+    - bazel build eevee:eevee
+  stage: compile
+  tags:
+    - bazel
+
+coffee compile:
+  script:
+    - bazel build coffee:coffee
+  stage: compile
+  tags:
+    - bazel
+
+eevee docker:
+  script:
+    - python eevee/make_build_info.py > eevee/src/main/resources/build.json
+    - ./eevee/deploy.sh
+  stage: build
+  only:
+    - master
+  tags:
+    - bazel
+
+coffee docker:
+  script:
+    - ./coffee/deploy.sh
+  stage: build
+  only:
+    - master
+  tags:
+    - bazel
+
+inside docker:
+  script:
+    - ./inside/deploy.sh
+  stage: build
+  only:
+    - master
+  dependencies:
+    - inside frontend
+  tags:
+    - bazel
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  tags:
+    - bazel
+  script:
+    - gpg -v --import <(echo "$GPG_PRIVATE_KEY")
+    - tooling/keyz.par ops/nomad ops/secrets
+    - nomad run ops/nomad/inside.nomad
+    - nomad run ops/nomad/bot.nomad
+    - nomad run ops/nomad/coffee.nomad

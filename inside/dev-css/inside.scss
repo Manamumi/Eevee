@@ -1,0 +1,101 @@
+#navbar-user-info {
+    color: #fff;
+}
+
+#navbar-user-info img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 2px;
+}
+
+.speech-bubble {
+    display: inline-block;
+    position: relative;
+    background: #7e8892;
+    border-radius: .4rem;
+    color: #ffffff;
+    padding: 0.2rem 0.6rem;
+    margin-right: 1rem;
+    margin-top: 0.3rem;
+}
+
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	right: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 0.4rem solid transparent;
+	border-left-color: #7e8892;
+	border-right: 0;
+    margin-top: -0.4rem;
+    margin-right: -0.4rem;
+}
+
+.bootbox .modal-header{
+  display: block;
+}
+
+.card > nav > .breadcrumb {
+    border-radius: 0;
+}
+
+.card > nav > .breadcrumb a {
+    color: rgba(0, 0, 0, 255);
+}
+
+.card > .alert {
+    border-radius: 0;
+    border-width: 1px 0;
+    margin: 0;
+}
+
+.loading-placeholder {
+  animation: placeholder-pulse 2s infinite ease-in-out;
+}
+
+@keyframes placeholder-pulse {
+  0% {
+    background-color: #f5f5f5;
+  }
+  50% {
+    background-color: #eeeeee;
+  }
+  100% {
+    background-color: #f5f5f5;
+  }
+}
+
+/** Adopted from http://tobiasahlin.com/spinkit/ */
+.bouncing-dots {
+  text-align: center;
+}
+
+.bouncing-dots > div {
+  width: 0.7rem;
+  height: 0.7rem;
+  background-color: #ffffff;
+  border-radius: 100%;
+  display: inline-block;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  margin: 0 0.3rem;
+}
+
+.bouncing-dots .bounce1 {
+  animation-delay: -0.32s;
+}
+
+.bouncing-dots .bounce2 {
+  animation-delay: -0.16s;
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% {
+    transform: scale(0);
+  } 40% {
+    transform: scale(1.0);
+  }
+}
+
+@import 'apps';

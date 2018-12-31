@@ -1,0 +1,42 @@
+image: docker:stable
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+services:
+  - docker:dind
+
+stages:
+  - compile
+  - deploy
+
+cache:
+  key: ${CI_BUILD_REF_NAME}
+  paths:
+    - node_modules/
+
+frontend:
+  image: node:10.9
+  script:
+    - npm install
+    - npm install -g grunt-cli
+    - npm rebuild node-sass
+    - grunt
+  stage: compile
+  artifacts:
+    paths:
+      - static/
+
+docker image:
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - echo $DOCKER_PASSWORD | docker login <redacted> --username=$DOCKER_USERNAME --password-stdin
+    - docker build --tag <redacted>/inside_eevee .
+    - docker push <redacted>/inside_eevee
+  stage: deploy
+  dependencies:
+    - frontend
+  only:
+    - master

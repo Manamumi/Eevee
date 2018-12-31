@@ -1,0 +1,5 @@
+ops/secrets/do_space_key
+ops/secrets/do_space_secret
+ops/secrets/eevee_app_token
+ops/secrets/inside_app_token
+ops/secrets/inside_token
